@@ -26,6 +26,13 @@ app.use((req, res, next) => {
 app.use('/products', productRoutes);
 app.use('/', authRoutes);
 
-mongodb.connect('mongodb+srv://appdev:dev@project0.opucdzh.mongodb.net/?retryWrites=true&w=majority')
+mongodb.connect('mongodb+srv://appdev:dev@project0.opucdzh.mongodb.net/shop?retryWrites=true&w=majority')
+  .then((client) => {
+    console.log('Connected to MongoDB Database!');
+    client.close();
+  })
+  .catch(err => {
+    console.log(err)
+  });
 
 app.listen(3100);
