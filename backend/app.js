@@ -2,10 +2,10 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongodb = require('mongodb').MongoClient;
 
 const productRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
+const db = require('./db');
 
 const app = express();
 
@@ -26,13 +26,10 @@ app.use((req, res, next) => {
 app.use('/products', productRoutes);
 app.use('/', authRoutes);
 
-mongodb.connect('mongodb+srv://appdev:dev@project0.opucdzh.mongodb.net/shop?retryWrites=true&w=majority')
-  .then((client) => {
-    console.log('Connected to MongoDB Database!');
-    client.close();
-  })
-  .catch(err => {
-    console.log(err)
-  });
-
-app.listen(3100);
+db.initDb((err, db) => {
+  if (err) {
+    console.log(err);
+  } else {
+    app.listen(3100);
+  }
+});
